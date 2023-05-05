@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form acction = "/index" method = "POST">
+        <p>Please select Graduation start and end dates</p>
+        <div class = "mb-3">
+            <input class="form-control mx-auto w-auto" id="start_year" name = "start_year" placeholder="Start year" type = "number">
+            <p> </p>
+            <select name="first_term">
+                <option disable selected>Term</option>
+                <option>Fall</option>
+                <option>Winter</option>
+                <option>Spring</option>
+                <option>Summer</option>
+            </select>
+        </div>
+        <div class = "mb-3">
+            <input class="form-control mx-auto w-auto" id="graduation_year" name = "graduation_year" placeholder="Graduation year" type = "number">
+            <p> </p>
+            <select name="last_term">
+                <option disable selected>Term</option>
+                <option>Fall</option>
+                <option>Winter</option>
+                <option>Spring</option>
+                <option>Summer</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">submit</button>
+    </form>
+
+{% endblock %}

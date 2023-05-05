@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    4 Year Graduation Plan
+{% endblock %}
+
+{% block main %}
+    <form action="/remove" method = "POST">
+        <b>DELETE A COURSE</b>
+        <table class="table table-striped table-hover table-warning">
+            <thead>
+                <tr>
+                    <th>
+                        <select class="form-select mx-auto w-auto" name="course_remove">
+                            <option disable selected> Course </option>
+                            {% for course in courses %}
+
+                                <option value="{{course}}">{{course}}</option>
+
+                            {% endfor %}
+                        </select>
+                    </th>
+                    <th>
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="remove_year" name="remove_year" placeholder="Year" required type="number">
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <select class="form-select mx-auto w-auto" name="remove_term">
+                            <option disable selected>Term</option>
+                            {% for term in terms %}
+                                <option>{{term}}</option>
+                            {% endfor %}
+                        </select>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    <input type = "submit" value="delete Course" class="btn btn-danger">
+    </form>
+{% endblock %}
