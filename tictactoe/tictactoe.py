@@ -78,26 +78,71 @@ def winner(board):
     if ((board[0][0] == X and board[0][1] == X and board[0][2] == X) or
         (board[1][0] == X and board [1][1] == X and board[1][2] == X) or
         (board[2][0] == X and board [2][1] == X and board[2][2] == X) or 
-        (board[0][] == X and board [1][] == X and board[2][] == X) or 
-        (board[0][] == X and board [1][] == X and board[2][] == X) or 
-        (board[0][] == X and board [1][] == X and board[2][] == X) or 
-        (board[][] == X and board [][] == X and board[][] == X) or 
-        (board[][] == X and board [][] == X and board[][] == X) )
+        (board[0][0] == X and board [1][0] == X and board[2][0] == X) or 
+        (board[0][1] == X and board [1][1] == X and board[2][1] == X) or 
+        (board[0][2] == X and board [1][2] == X and board[2][2] == X) or 
+        (board[0][0] == X and board [1][1] == X and board[2][2] == X) or 
+        (board[0][2] == X and board [1][1] == X and board[2][0] == X) ):
 
+        return X
+    elif ((board[0][0] == O and board[0][1] == O and board[0][2] == O) or
+        (board[1][0] == O and board [1][1] == O and board[1][2] == O) or
+        (board[2][0] == O and board [2][1] == O and board[2][2] == O) or 
+        (board[0][0] == O and board [1][0] == O and board[2][0] == O) or 
+        (board[0][1] == O and board [1][1] == O and board[2][1] == O) or 
+        (board[0][2] == O and board [1][2] == O and board[2][2] == O) or 
+        (board[0][0] == O and board [1][1] == O and board[2][2] == O) or 
+        (board[0][2] == O and board [1][1] == O and board[2][0] == O) ):
+
+        return O
+    else:
+        return None
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    #raise NotImplementedError
+    if winner(board) is None:
+        for row in range(len(board)):
+            for column in range (len(board[row])):
+                if board[row][column] is EMPTY:
+                    return False
+    else:
+        return True
 
 
 def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    raise NotImplementedError
+    #raise NotImplementedError
+    if terminal(board) is True:
+        if ((board[0][0] == X and board[0][1] == X and board[0][2] == X) or
+            (board[1][0] == X and board [1][1] == X and board[1][2] == X) or
+            (board[2][0] == X and board [2][1] == X and board[2][2] == X) or 
+            (board[0][0] == X and board [1][0] == X and board[2][0] == X) or 
+            (board[0][1] == X and board [1][1] == X and board[2][1] == X) or 
+            (board[0][2] == X and board [1][2] == X and board[2][2] == X) or 
+            (board[0][0] == X and board [1][1] == X and board[2][2] == X) or 
+            (board[0][2] == X and board [1][1] == X and board[2][0] == X) ):
+
+            return 1
+        elif ((board[0][0] == O and board[0][1] == O and board[0][2] == O) or
+            (board[1][0] == O and board [1][1] == O and board[1][2] == O) or
+            (board[2][0] == O and board [2][1] == O and board[2][2] == O) or 
+            (board[0][0] == O and board [1][0] == O and board[2][0] == O) or 
+            (board[0][1] == O and board [1][1] == O and board[2][1] == O) or 
+            (board[0][2] == O and board [1][2] == O and board[2][2] == O) or 
+            (board[0][0] == O and board [1][1] == O and board[2][2] == O) or 
+            (board[0][2] == O and board [1][1] == O and board[2][0] == O) ):
+
+            return -1
+        else:
+            return 0
+    else:
+        raise ValueError("Board has not reached a terminal state yet")
 
 
 def minimax(board):
