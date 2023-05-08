@@ -171,13 +171,17 @@ def minimax(board):
     if player(board) is X:
         for action in actions(board):
             options[min_value(result(board,action))] = action     
-        sorted(options.keys)
-        return options.popitem
+        myKeys = list(options.keys())
+        myKeys.sort(reverse=True)
+        sorted_dict = {i: options[i] for i in myKeys}
+        return options.popitem()[1]
     else:
         for action in actions(board):
             options[max_value(result(board,action))] = action
-        sorted(options.keys, reversed = True)
-        return options.popitem
+        myKeys = list(options.keys())
+        myKeys.sort()
+        sorted_dict = {i: options[i] for i in myKeys}
+        return options.popitem()[1]
     #raise NotImplementedError
 
 def max_value(board):
