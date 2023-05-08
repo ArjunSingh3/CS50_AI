@@ -119,7 +119,7 @@ def shortest_path(source, target):
         num_states_explored += 1
 
         # if the current node is the solution then make two arrays and back track to find the path tha was followed
-        if node.state == target:
+        """if node.state == target:
             print("Found Solution")
             # movies
             actions = []
@@ -133,13 +133,13 @@ def shortest_path(source, target):
                 node = node.parent
             actions.reverse()
             cells.reverse()
-            """
+            
             # Make sure the return type/ Check to see you are returning what you should despite calculating the correct answer
-            """
+            
             x = zip(actions, cells)
             for movie, person in x:
                 extra.append((movie, person))
-            return extra
+            return extra"""
 
         # Add the explored set to the explored set
         # so that it can be found when back tracking
@@ -154,13 +154,13 @@ def shortest_path(source, target):
         """
         print("Adding neighbors to frontier")
         for action, state in neighbors_for_person(node.state):
-            print("Looping through the Neigbors array")
+            #print("Looping through the Neigbors array")
             if not frontier.contains_state(state) and state not in explored:
-                print("Not in frontier and not in explored, hence adding to Queue")
+                #print("Not in frontier and not in explored, hence adding to Queue")
                 child = Node(state=state,parent=node, action=action)
                 frontier.add(child)
-                """if child.state == target:
-                    print("Found Solution")
+                if child.state == target:
+                    #print("Found Solution")
                     # movies
                     actions = []
                     # people
@@ -179,7 +179,7 @@ def shortest_path(source, target):
                     x = zip(actions,cells)
                     for movie, person in x:
                         extra.append((movie,person))
-                    return extra"""
+                    return extra
 
 
 

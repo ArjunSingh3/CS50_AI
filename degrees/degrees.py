@@ -91,9 +91,66 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    # Keep track of number of states explored
+    num_explored = 0
+
+    # Initialize froniter to just the starting position
+    start = Node(state = source,parent = None, action = None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+
+    # Initilaize an emoty explored set
+    explored = set()
+    
+    print(source)
+    print(target)
+    # Keep looping until solution found
+    while True:
+
+        if frontier.empty():
+            raise Exception("No Solution")
+        
+        # Choose a node from the frontier
+        node = frontier.remove()
+        num_explored += 1
+        
+        # Setup a goal variable
+        # If node is the goal, then we have a solution
+        print(node.state,", ", target)
+        if frontier.contains_state(target):
+            print("found")
+            #exit()
+            actions = []
+            # people
+            cells = []
+            # solution
+            extra = []
+            while child.parent is not None:
+                actions.append(child.action)
+                cells.append(child.state)
+                child = child.parent
+            actions.reverse()
+            cells.reverse()
+            
+            # Make sure the return type/ Check to see you are returning what you should despite calculating the correct answer
+            
+            x = zip(actions,cells)
+            for movie, person in x:
+                extra.append((movie,person))
+            print("Found Solution")
+            return extra
+        # Mark node as explored
+        explored.add(node.state)
+
+        # Add neighbors to frontier
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state = state, parent = node, action = action)
+                frontier.add(child)
+
 
     # TODO
-    raise NotImplementedError
+    #raise NotImplementedError
 
 
 def person_id_for_name(name):

@@ -58,7 +58,7 @@ def actions(board):
     for row in range(len(board)):
         for column in range (len(board[row])):
             if(board[row][column]==EMPTY):
-                moves.append((row,column))
+                moves.append([row,column])
 
     return moves    
 
