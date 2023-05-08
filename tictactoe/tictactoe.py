@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+import copy
 
 X = "X"
 O = "O"
@@ -66,7 +67,18 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    #raise NotImplementedError
+    if board[action[0]][action[1]] == EMPTY:
+        # Make a ddep copy of the board
+        board_Copy = copy.deepcopy(board)
+        if player(board) is X:
+            board_Copy[action[0]][action[1]] = X
+        else:
+            board_Copy[action[0]][action[1]] = O
+
+        return board_Copy
+    else:
+        raise NameError("Not a valid Move")
 
 
 
@@ -109,6 +121,7 @@ def terminal(board):
             for column in range (len(board[row])):
                 if board[row][column] is EMPTY:
                     return False
+        return True
     else:
         return True
 
@@ -145,8 +158,40 @@ def utility(board):
         raise ValueError("Board has not reached a terminal state yet")
 
 
+"""
+X is the max player -  Goal is to maximize the score (1)
+O is the min player - Goal is to minimize the score (-1)
+(0) Draw
+"""
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    options = {}
+    if player(board) is X:
+        for action in actions(board):
+            options[min_value(result(board,action))] = action     
+        sorted(options.keys)
+        return options.popitem
+    else:
+        for action in actions(board):
+            options[max_value(result(board,action))] = action
+        sorted(options.keys, reversed = True)
+        return options.popitem
+    #raise NotImplementedError
+
+def max_value(board):
+    if terminal(board) is True:
+        return utility(board)
+    v = -math.inf
+    for action in actions(board):
+        v = max(v,min_value(result(board,action)))
+    return v
+    
+def min_value(board):
+    if terminal(board) is True:
+        return utility(board)
+    v = math.inf
+    for action in actions(board):
+        v = min(v,max_value(result(board,action)))
+    return v
