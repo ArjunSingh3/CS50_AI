@@ -1,0 +1,78 @@
+Week_1 Notes:
+
+Not (~):
+    P       ~P
+    False   True
+    True    False
+And (^):
+P       Q        P ^ Q
+False   False   False
+False   True    False
+True    False   False
+True    True    True
+
+Or (U)/[Union]:
+P       Q        P U Q
+False   False   False
+False   True    True
+True    False   True
+True    True    True
+
+Implication (->):
+P       Q        P -> Q
+False   False   True
+False   True    True
+True    False   False
+True    True    True
+
+BiConditional (<->): (if and only if)[Only true when P and Q are both the same]
+P       Q        P -> Q
+False   False   True
+False   True    False
+True    False   False
+True    True    True
+
+** Model:
+
+Knowledge Base:
+
+* Inference:
+** Entailment:
+    a |= b
+
+    Conclusion/ Truth
+
+Inference Example:
+
+P: It is a Tuesday
+Q: It is raining
+R: Harry will go for a run
+
+Knowledge Base: (P ^ ~Q) -> R(If it is a tuesday and it is not raining, then harry will go for a run), P(It is a Tuesday), ~Q(It is not raining) 
+0 -> False
+1 -> True
+
+P       Q       R   KB
+0       0       0   0(False)
+0       0       1   0(False)
+0       1       0   0(False)
+0       1       1   0(False)
+1       0       0   0(False)
+1       0       1   1(True)
+1       1       0   0(False)
+1       1       1   0(False)
+
+
+**
+Clue:
+
+1.  (mustard U plum U scarlet)
+2.  (ballroom U kitchen U library)
+3.  (knife U revolver U wrench)
+4.  (~Plum) #Card that I have
+5.  ()# Someone else's guess
+6.
+7.
+
+
+**
