@@ -105,27 +105,40 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be mines.
         """
-        raise NotImplementedError
+        known_mines_list = set()
+        if self.count == list(self.cells):
+            return self.cells
+        else:
+            return known_mines_list.clear()
 
     def known_safes(self):
         """
         Returns the set of all cells in self.cells known to be safe.
         """
-        raise NotImplementedError
+        known_safe_list = set()
+        if self.count == 0:
+            return self.cells
+        else:
+            return known_safe_list.clear()
 
     def mark_mine(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be a mine.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
+        if cell in self.cells:
+            self.cells.discard(cell)
+            self.count -= 1
 
     def mark_safe(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be safe.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
+        if cell in self.cells:
+            self.cells.discard(cell)
 
 
 class MinesweeperAI():
@@ -193,7 +206,14 @@ class MinesweeperAI():
         This function may use the knowledge in self.mines, self.safes
         and self.moves_made, but should not modify any of those values.
         """
-        raise NotImplementedError
+        # raise NotImplementedError
+        if len(self.safes) == 0:
+            return None
+        else:
+            for move in self.safes:
+                if move not in self.moves_made:
+                    return move
+            return None
 
     def make_random_move(self):
         """
@@ -202,4 +222,15 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        raise NotImplementedError
+        # raise NotImplementedError
+        random_moves = set()
+        for i in range(self.height):
+            for j in range(self.width):
+                move = (i,j)
+                if move not in self.mines and move not in self.moves_made:
+                    random_moves.add(move)
+
+        if len(random_moves) == 0:
+            return None
+        else:
+            return random.choice(random_moves)

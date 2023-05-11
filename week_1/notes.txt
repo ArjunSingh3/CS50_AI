@@ -74,5 +74,92 @@ Clue:
 6.
 7.
 
-
 **
+
+** 
+Logic Puzzles:
+    Propositonal symbols
+    * 
+    * 
+    * 
+
+Modus Ponens:
+
+a -> b
+a
+_______
+b
+
+And Elimination(if both parts are true then one part either alpha or beta is definately true)
+a ^ b
+_________
+a
+
+Double negation Elimination:
+~(~a)
+_________
+a
+
+Implication Elimination(ex. if it is raining, then harry is inside = it is not raining or Harry is inside):
+a -> b
+_________
+~a U b
+
+Biconditional elimination(ex. It is raining if and only if harry is inside = )
+a <-> b
+_______________
+(a -> b)^(b->a)
+
+De Morgan's Law(ex. It is not true that both Harry and Ron passed the test = Harry did not pass the test or Ron did not pass the test ):
+~(a^b)
+_________
+~a U ~b
+
+Distributive Rule:
+a ^(b U g)
+_______________
+(a^b) U (a^g)
+
+***** Search Problem ******
+    * Initial State
+    * Actions
+    * transitoin model
+    * goal test
+    * path cost function
+
+
+***** Theorem Proving ******
+    * Initial State: Starting Knowledge base
+    * Actions: inference rules
+    * transitoin model: new knowledge base after inference
+    * goal test: check statment we're trying to prove
+    * path cost function: number of steps in proof
+
+Convertion to CNF(Conjunctive NOrmal Form)
+    * Eliminate Bi-Conditonals:
+        * turn (a<->b) into (a->b)^(b->a)
+    * Eliminate implications:
+        * turn (a->b) into ~a U b
+    * Move ~ inwards using De Morgan's Laws
+        * eg. turn ~(a^b) into ~a U ~b
+    * Use Distributive law to distribute U wherever possible
+
+    eg. (P U Q) -> R
+        _______________
+        ~(P U Q) U R
+        _______________
+        (~P ^ ~Q) U R
+        _______________
+        (~P U R) ^ (~Q U R)
+
+First order logic:
+
+
+
+Universal Quantification:
+
+
+
+Existential Quantification:
+
+

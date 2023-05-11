@@ -13,6 +13,14 @@ CKnave = Symbol("C is a Knave")
 # A says "I am both a knight and a knave."
 knowledge0 = And(
     # TODO
+    #Default Rules
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+    Not(And(AKnave,AKnight)),
+    # Things Said by A and B
+    Implication(AKnight,And(AKnight,AKnave)),
+    Implication(AKnave,Or(Not(AKnight),Not(AKnave)))
+
 )
 
 # Puzzle 1
@@ -20,6 +28,18 @@ knowledge0 = And(
 # B says nothing.
 knowledge1 = And(
     # TODO
+    # Default Rules of the Game
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+
+    # Things Said by A and B
+    Implication(AKnight,And(AKnave,BKnave)),
+    Implication(AKnave,Or(AKnight,BKnight)),
+
+    # BiConditional truths that I Know because there are only two players
+    Biconditional(AKnight,BKnave),
+    Biconditional(AKnave,BKnight)
+    
 )
 
 # Puzzle 2
@@ -27,6 +47,16 @@ knowledge1 = And(
 # B says "We are of different kinds."
 knowledge2 = And(
     # TODO
+    # Default Rules of the Game
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+
+    # Things Said by A and B
+    Implication(AKnight,Or(And(AKnight,BKnight),And(AKnave,BKnave))),
+    Implication(BKnight,Or(And(AKnight,BKnave),And(AKnave,BKnight))),
+    # BiConditional truths that I Know because there are only two players
+    Biconditional(AKnight,BKnave),
+    Biconditional(AKnave,BKnight)
 )
 
 # Puzzle 3
@@ -36,6 +66,26 @@ knowledge2 = And(
 # C says "A is a knight."
 knowledge3 = And(
     # TODO
+    # Default Rules of the Game
+    Or(AKnight,AKnave),
+    Or(BKnight,BKnave),
+    Or(CKnight,CKnave),
+
+    # Prevents from A,B, And C to be both Knights and Knaves, or uis not an exclusive Or
+    Not(And(AKnight,AKnave)),
+    Not(And(BKnight,BKnave)),
+    Not(And(CKnight,CKnave)),
+
+    # # A says either "I am a knight." or "I am a knave.", but you don't know which.
+    Implication(AKnight,Or(AKnight,AKnave)),
+    Implication(AKnave,And(Not(AKnight),Not(AKnave))),
+
+    # # B says "C is a knave."
+    Implication(BKnight,CKnave),
+    Implication(BKnave, CKnight),
+    # # C says "A is a knight."
+    Biconditional(CKnight,AKnight),
+
 )
 
 
@@ -47,6 +97,7 @@ def main():
         ("Puzzle 2", knowledge2),
         ("Puzzle 3", knowledge3)
     ]
+    
     for puzzle, knowledge in puzzles:
         print(puzzle)
         if len(knowledge.conjuncts) == 0:

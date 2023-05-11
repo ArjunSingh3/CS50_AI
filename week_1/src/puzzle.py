@@ -41,7 +41,6 @@ for house in houses:
 knowledge.add(
     Or(Symbol("GilderoyGryffindor"), Symbol("GilderoyRavenclaw"))
 )
-
 knowledge.add(
     Not(Symbol("PomonaSlytherin"))
 )
