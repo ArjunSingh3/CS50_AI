@@ -100,6 +100,12 @@ class Sentence():
 
     def __str__(self):
         return f"{self.cells} = {self.count}"
+    
+    def get_count(self):
+        return self.count
+
+    def get_set(self):
+        return self.cells
 
     def known_mines(self):
         """
@@ -202,17 +208,43 @@ class MinesweeperAI():
         self.mark_safe(cell)
         # Add a new sentence to the AI's knowledge base based on the value of 'cell' and 'count'
         set_of_cells = set()
-        for i in range(3):
-            for j in range(3):
-                neighbor_cell = (i,j)
+        i,j = cell
+        for row in range(3):
+            for column in range(3):
+                neighbor_cell = (row+i-1,column+j-1)
                 """
                 Double check the if statement as I might be checking more things than I need to
                 """
                 if neighbor_cell not in self.moves_made and neighbor_cell not in self.safes and neighbor_cell not in self.mines:
                     set_of_cells.add(neighbor_cell)
-        sentence = Sentence(set_of_cells)
+        new_Sentence = Sentence(set_of_cells,count)
         
+        # Add any new sentences to the AI's knowledge base if they can be infered fom any existing knowledge
+        """
+        THis will be done by manupilating sets in the nowledge base and being able 
+        to create new sets based on the existing knowledge
+        """
+        # Double Check The getter methods for getting the count and the set of a sentence
+        for sentence in self.knowledge:
 
+            inferred_sentence_count = abs(sentence.get_Count() - count)
+            inferred_sentence_set = (sentence.get_Set()- set_of_cells)
+
+            inferred_setence = Sentence(inferred_sentence_set,inferred_sentence_count)
+
+            if inferred_setence not in self.knowledge:
+                self.add_knowledge(inferred_setence)
+            else:
+                continue
+
+        # Mark any additional cells as safe or as mines if it can be concluded based on the AI's knowledge base
+        for sentence in self.knowledge:
+            if(sentence.get_Count == len[sentence.get_Set()]):
+                for cell in sentence.get_Set():
+                    sentence.mark_mine(cell)
+            elif sentence.get_Count is 0:
+                for cell in sentence.get_Set():
+                    sentence.mark_safe(cell)
 
 
     def make_safe_move(self):

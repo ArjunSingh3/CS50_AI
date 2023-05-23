@@ -1,0 +1,41 @@
+(i-1.j-1)   |(i-1,j)    |(i-1,j+1)
+____________________________________
+(i,j-1)     | (i,j)     |(i,j+1)
+____________________________________
+(i+1,j-1)   |(i+1,j)    |(i+1.j+1)
+
+2-D List in python:
+list = [[A,B,C],
+        [D,E,F],
+        [G,H,I]
+    ]
+
+E = (i,j)
+A = (i-1,j-1)
+B = 
+C = 
+D = 
+F = 
+G = 
+H = 
+I = (i+1,j+1)
+
+Example:
+(i,j) = 5,5
+
+4,4 4,5 4,6
+5,4 5,5 5,6
+6,4 6,5 6,6
+
+Hence, the nested For loop works
+
+_________________________________________________________________
+
+Comapring the new sentence with all the other sentences in our knowledge base
+
+New Sentence:
+{A, B, C} = 1 
+Sentence in knowledge base:
+{A, B, C, D, E} = 2
+
+new_Sentence - sentence => {D,E} = 1
