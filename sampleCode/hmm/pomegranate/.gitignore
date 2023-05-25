@@ -1,0 +1,14 @@
+*.pyc
+*.c
+.ipynb_checkpoints
+*~
+.DS_Store
+build
+*.so
+.idea/
+.vscode/
+dist/
+.eggs/
+*.egg-info/
+*.pyd
+.python-version

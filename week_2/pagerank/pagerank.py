@@ -13,6 +13,7 @@ def main():
     corpus = crawl(sys.argv[1])
     # Print Block For Reference
     #______________________________________________________________
+    
     for sub in corpus:
         print(sub)
         print("⎇  ", end="")
@@ -23,7 +24,9 @@ def main():
             if iterator !=  0:
                 print("⎇  ", end="")
         print()
+    
     #______________________________________________________________
+
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
     print(f"PageRank Results from Sampling (n = {SAMPLES})")
     for page in sorted(ranks):
@@ -69,7 +72,45 @@ def transition_model(corpus, page, damping_factor):
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
     """
-    raise NotImplementedError
+    """
+    Returns a dictionay:
+    key: Page Name
+    Value: Probability of each page being visited next
+    """
+    value = dict()
+    list_of_direct_links = []
+    if len(corpus[page]) != 0:
+        for sub_nest in corpus[page]:
+            list_of_direct_links.append(sub_nest)
+
+        for sub in corpus:
+            base_probability = (1-damping_factor)/len(corpus)
+            #print(sub,":",base_probability)
+            #print("⎇  ", end="")
+            
+            
+            if sub in list_of_direct_links:
+                #print(sub,"Hi :",base_probability)
+                base_probability += (damping_factor/len(corpus[page]))
+                #print("Damping factor: ", (damping_factor/len(corpus[page])))
+                #print(sub,"Hi :",base_probability)
+                
+            #        #_______________________________________
+            #        iterator -= 1
+            #        #print(sub_nest,":",base_probability)
+            #        #_______________________________________
+            #        if iterator !=  0:
+            #            #print("⎇  ", end="")
+            #print()
+            value[sub] = base_probability
+        #print(value)
+    else:
+        print("hello World!")
+        for link in corpus:
+            value[link] = 1/len(corpus)
+    #print(value)
+    return value
+    # raise NotImplementedError
 
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -81,7 +122,43 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    """
+    Returns a dictionay:
+    key: Page Name
+    Value: Estimated Page Rank (A number between 0 and 1(Probability))
+    """
+    pagerank = dict()
+
+    # Initializing all page ranks to 0 to detect errors straight forward if any
+    for page in corpus:
+        pagerank[page] = 0
+
+    random_page = random.choice(list(corpus.keys()))
+    pagerank[random_page] += 1
+    print(random_page)
+    probability_distribution = transition_model(corpus,random_page,damping_factor)
+    pages_list = list(probability_distribution.keys())
+    probability_list = [probability_distribution[key] for key in pages_list]
+    random_page = random.choices(pages_list,probability_list)[0]
+    print(random_page)
+    for i in range(n-1):
+        probability_distribution = transition_model(corpus,random_page,damping_factor)
+
+        pages_list = list(probability_distribution.keys())
+        probability_list = [probability_distribution[key] for key in pages_list]
+
+        random_page = random.choices(pages_list,probability_list)[0]
+        pagerank[random_page] += 1
+
+    total = 0
+    for key,value in pagerank.items():
+        print(key)
+        print(value)
+        total += value/n
+        pagerank[key] = value/n
+    print(total)
+    return pagerank
+    #raise NotImplementedError
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -93,7 +170,13 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    """
+    Returns a dictionay:
+    key: Page Name
+    Value: Estimated Page Rank (A number between 0 and 1(Probability))
+    """
+    print("Hello World!")
+    #raise NotImplementedError
 
 
 if __name__ == "__main__":
