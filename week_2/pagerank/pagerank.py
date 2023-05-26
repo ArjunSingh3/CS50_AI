@@ -13,7 +13,8 @@ def main():
     corpus = crawl(sys.argv[1])
     # Print Block For Reference
     #______________________________________________________________
-    
+    sum = 0.0375+ 0.85*((0.14375/1)+((1/4)/2)+((1/4)/1))
+    print("sum:",sum)
     for sub in corpus:
         print(sub)
         print("⎇  ", end="")
@@ -175,8 +176,35 @@ def iterate_pagerank(corpus, damping_factor):
     key: Page Name
     Value: Estimated Page Rank (A number between 0 and 1(Probability))
     """
+    pagerank = dict()
+
+    for page in corpus:
+        pagerank[page] = 1/len(corpus)
+
+    
+    
+    pagerank = helper_iterate_pagerank(corpus,pagerank)
+
+    return pagerank
+    
     print("Hello World!")
     #raise NotImplementedError
+
+def helper_iterate_pagerank(corpus,pagerank_dict):
+    old_dict = dict()
+    
+    old_dict = pagerank_dict
+
+    for page in corpus:
+        print("Hello World! from iterator")
+
+    # BASE CASE:
+    for i in range(len(corpus)):
+        if:
+            
+
+    
+
 
 
 if __name__ == "__main__":
