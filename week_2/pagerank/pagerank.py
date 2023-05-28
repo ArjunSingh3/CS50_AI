@@ -1,3 +1,5 @@
+from collections import OrderedDict
+import copy
 import os
 import random
 import re
@@ -13,6 +15,7 @@ def main():
     corpus = crawl(sys.argv[1])
     # Print Block For Reference
     #______________________________________________________________
+    """
     sum = 0.0375+ 0.85*((0.14375/1)+((1/4)/2)+((1/4)/1))
     print("sum:",sum)
     for sub in corpus:
@@ -25,7 +28,7 @@ def main():
             if iterator !=  0:
                 print("⎇  ", end="")
         print()
-    
+    """
     #______________________________________________________________
 
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
@@ -106,7 +109,7 @@ def transition_model(corpus, page, damping_factor):
             value[sub] = base_probability
         #print(value)
     else:
-        print("hello World!")
+       # print("hello World!")
         for link in corpus:
             value[link] = 1/len(corpus)
     #print(value)
@@ -153,11 +156,11 @@ def sample_pagerank(corpus, damping_factor, n):
 
     total = 0
     for key,value in pagerank.items():
-        print(key)
-        print(value)
+        #print(key)
+        #print(value)
         total += value/n
         pagerank[key] = value/n
-    print(total)
+    #print(total)
     return pagerank
     #raise NotImplementedError
 
@@ -177,30 +180,61 @@ def iterate_pagerank(corpus, damping_factor):
     Value: Estimated Page Rank (A number between 0 and 1(Probability))
     """
     pagerank = dict()
-
-    for page in corpus:
+    corpus_ordered = OrderedDict(reversed(list(corpus.items())))
+    for page in corpus_ordered:
         pagerank[page] = 1/len(corpus)
 
+    #pagerank_ordered = OrderedDict(reversed(list(pagerank.items())))
     
     
-    pagerank = helper_iterate_pagerank(corpus,pagerank)
-
+    pagerank= helper_iterate_pagerank(corpus_ordered,pagerank)
+    #print(pagerank)
     return pagerank
     
-    print("Hello World!")
+   # print("Hello World!")
     #raise NotImplementedError
 
 def helper_iterate_pagerank(corpus,pagerank_dict):
     old_dict = dict()
     
-    old_dict = pagerank_dict
-
+    old_dict = copy.deepcopy(pagerank_dict)
+   
     for page in corpus:
-        print("Hello World! from iterator")
-
+        # print("Hello World! from iterator")
+        # Such that it always gets initialized to 0
+        #print("Page calculating for: ", page)
+        sum = 0
+        #print("Sum before: ",sum)
+        for pages in corpus:
+            #print("pageRank current: ",pagerank_dict[pages])
+            #print("number of links")
+            #print("pages Name", pages)
+            if page in corpus[pages]:
+                sum += pagerank_dict[pages]/len(corpus[pages])
+                #print("Sum current: ",sum)
+            #sum = 0.0375+ 0.85*((0.14375/1)+((1/4)/2)+((1/4)/1))
+        #print("Sum after: ",sum)
+        #print("page Name", page)
+        pagerank_dict[page] = (((1-DAMPING)/len(corpus))+(DAMPING*sum))
+        #print("page Value", pagerank_dict[page])
+    call_again = False
     # BASE CASE:
-    for i in range(len(corpus)):
-        if:
+    for page in corpus:
+        check = abs(old_dict[page]-pagerank_dict[page])
+        #print("Page: ", page)
+        #print("Hello World! old_dict:", old_dict[page])
+        #print("Hello World! new_dict:", pagerank_dict[page])
+        #print("Hello World! Checking for Base Case: ",check )
+        if check >= 0.001:
+           # print("Hello World! I am calling the iterator")
+            call_again = True
+
+    if call_again:
+        #print("iterate again")
+        pagerank_dict = helper_iterate_pagerank(corpus,pagerank_dict)
+    
+
+    return pagerank_dict
             
 
     
