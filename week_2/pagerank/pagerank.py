@@ -13,9 +13,10 @@ def main():
     if len(sys.argv) != 2:
         sys.exit("Usage: python pagerank.py corpus")
     corpus = crawl(sys.argv[1])
+    print(corpus)
     # Print Block For Reference
     #______________________________________________________________
-    """
+    #"""
     sum = 0.0375+ 0.85*((0.14375/1)+((1/4)/2)+((1/4)/1))
     print("sum:",sum)
     for sub in corpus:
@@ -28,7 +29,7 @@ def main():
             if iterator !=  0:
                 print("⎇  ", end="")
         print()
-    """
+    #"""
     #______________________________________________________________
 
     ranks = sample_pagerank(corpus, DAMPING, SAMPLES)
@@ -212,6 +213,8 @@ def helper_iterate_pagerank(corpus,pagerank_dict):
             if page in corpus[pages]:
                 sum += pagerank_dict[pages]/len(corpus[pages])
                 #print("Sum current: ",sum)
+            if not corpus[pages]:
+                sum += pagerank_dict[pages]/ len(corpus)
             #sum = 0.0375+ 0.85*((0.14375/1)+((1/4)/2)+((1/4)/1))
         #print("Sum after: ",sum)
         #print("page Name", page)
