@@ -128,6 +128,12 @@ class CrosswordCreator():
         Return True if `assignment` is complete (i.e., assigns a value to each
         crossword variable); return False otherwise.
         """
+        for variable, values in assignment:
+            if values is None:
+                return False
+        return True
+
+        # Will be Removed for Testing ONLY! Be Careful
         raise NotImplementedError
 
     def consistent(self, assignment):
@@ -135,6 +141,16 @@ class CrosswordCreator():
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
+        # Objectives: 
+        # All values must be distinct : Make a set and if the length of the set is different than the length of the list of values in the assignment dict then one or more values is not distinct and return false
+        # Every value should be the correct length : Not sure exactly where We will get the correct length from, but comparing lengths shouldn't be too bad
+        # There should not be any conflicts between neighboring variables : Thinking....
+
+        # Solution:
+
+        for variable, values in assignment:
+            print(len(values))
+            
         raise NotImplementedError
 
     def order_domain_values(self, var, assignment):
