@@ -120,6 +120,13 @@ class NimAI():
             * If no Q-value for the state/action pair exists in 
               self.q, then the function should return 0.
         """
+
+        # Double Check and test, Alternative is to use a get function
+        key = (state,action)
+        if key in self.q:
+            return self.q[key]
+        else:
+            return 0
         raise NotImplementedError
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
@@ -153,6 +160,13 @@ class NimAI():
               should be the sum of the current reward and the 
               estimated future reward.
         """
+        new_value = 0 # Place Holder 
+        alpha = self.alpha
+        old_value_estimate = old_q # Maybe??
+        new_value_estimate = reward+future_rewards
+        key = (state,action)
+        self.q[key] = old_value_estimate + alpha*(new_value_estimate-old_value_estimate)
+
         raise NotImplementedError
 
     def best_future_reward(self, state):
@@ -176,6 +190,12 @@ class NimAI():
             * If no actions are available in the state, you should 
               return 0.
         """
+
+        # Double Check and see if state is a valid board -> The idea is to find all the actions using the Nim Class
+        # Using that we Can have a maximum function that goes over the all the actions and find the maximum Reward
+        nim_board = Nim()
+
+
         raise NotImplementedError
 
     def choose_action(self, state, epsilon=True):
