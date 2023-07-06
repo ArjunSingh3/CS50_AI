@@ -1,6 +1,20 @@
 import math
 import random
 import time
+import logging
+
+import logging
+
+# Configure the logging settings
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Log statements
+logging.debug('This is a debug message')
+logging.info('This is an info message')
+logging.warning('This is a warning message')
+logging.error('This is an error message')
+logging.critical('This is a critical message')
+
 
 
 class Nim():
@@ -52,13 +66,18 @@ class Nim():
         `action` must be a tuple `(i, j)`.
         """
         pile, count = action
-
+        # print("in Base function pile:", pile)
+        # print("in Base function count:", count)
         # Check for errors
         if self.winner is not None:
             raise Exception("Game already won")
         elif pile < 0 or pile >= len(self.piles):
             raise Exception("Invalid pile")
         elif count < 1 or count > self.piles[pile]:
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # print("count: ", count)
+            # print("number of piles: ", self.piles[pile])
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             raise Exception("Invalid number of objects")
 
         # Update pile
@@ -79,6 +98,7 @@ class Nim():
 class NimAI():
 
     def __init__(self, alpha=0.5, epsilon=0.1):
+        logging.debug("_____ in init functin of NimAI()______")
         """
         Initialize AI with an empty Q-learning dictionary,
         an alpha (learning) rate, and an epsilon rate.
@@ -98,11 +118,13 @@ class NimAI():
         in that state, a new resulting state, and the reward received
         from taking that action.
         """
+        logging.debug("____ In Update function _____")
         old = self.get_q_value(old_state, action)
         best_future = self.best_future_reward(new_state)
         self.update_q_value(old_state, action, old, reward, best_future)
 
     def get_q_value(self, state, action):
+        logging.debug("_____ in get_q_value function ______")
         """
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
@@ -122,7 +144,7 @@ class NimAI():
         """
 
         # Double Check and test, Alternative is to use a get function
-        key = (state,action)
+        key = (tuple(state),action)
         if key in self.q:
             return self.q[key]
         else:
@@ -130,6 +152,7 @@ class NimAI():
         raise NotImplementedError
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
+        logging.debug("______ in update_q_value function ______")
         """
         Update the Q-value for the state `state` and the action `action`
         given the previous Q-value `old_q`, a current reward `reward`,
@@ -164,12 +187,13 @@ class NimAI():
         alpha = self.alpha
         old_value_estimate = old_q # Maybe??
         new_value_estimate = reward+future_rewards
-        key = (state,action)
+        key = (tuple(state),action)
         self.q[key] = old_value_estimate + alpha*(new_value_estimate-old_value_estimate)
 
-        raise NotImplementedError
+        # raise NotImplementedError
 
     def best_future_reward(self, state):
+        logging.debug("_____ best_future_reward function ______")
         """
         Given a state `state`, consider all possible `(state, action)`
         pairs available in that state and return the maximum of all
@@ -191,14 +215,36 @@ class NimAI():
               return 0.
         """
 
-        # Double Check and see if state is a valid board -> The idea is to find all the actions using the Nim Class
-        # Using that we Can have a maximum function that goes over the all the actions and find the maximum Reward
+        # Double Check and see if state is a valid board -> The idea 
+        # is to find all the actions using the Nim Class
+        # Using that we Can have a maximum function that goes over 
+        # the all the actions and find the maximum Reward
         nim_board = Nim()
+
+        possible_actions = nim_board.available_actions(state)
+
+        max_reward = 0
+
+        if possible_actions is None:
+            max_reward = 0
+        else:
+            for action in possible_actions:
+                row, num_objects  = action
+                key_reward = (tuple(state),action)
+                if key_reward not in self.q:
+                    continue
+                elif self.q[key_reward] > max_reward:
+                    max_reward = self.q[key_reward]
+                else:
+                    continue
+        
+        return max_reward
 
 
         raise NotImplementedError
 
     def choose_action(self, state, epsilon=True):
+        logging.debug("_____ In Choose action function _____")
         """
         Given a state `state`, return an action `(i, j)` to take.
 
@@ -231,7 +277,61 @@ class NimAI():
             * If multiple actions have the same Q-value, any of those 
               options is an acceptable return value.
         """
-        raise NotImplementedError
+
+        nim_board = Nim()
+
+        possible_actions = list(nim_board.available_actions(state))
+        # print("possible actions: ",possible_actions[0])
+
+        max_reward = 0
+        max_key = possible_actions[0]
+        # print("true or False: ",epsilon)
+        if epsilon:
+            if random.uniform(0,1) < self.epsilon:
+                # print("randomly with true epsilon? ")
+                # print("length of possible_actions: ", len(possible_actions))
+                index = random.randint(0,len(possible_actions)-1)
+                max_key = possible_actions[index]
+                
+                # print("Choose a random action with the probability self.epsilon")
+                
+            else:
+                #print("best case with false epsilon")
+                for action in possible_actions:
+                    row, num_objects  = action
+                    key_reward = (tuple(state),action)
+                    # print("key_reward: ",key_reward)
+                    # key_reward = tuple(key_reward)
+                    # print("tuple key_reward: ",key_reward)
+                    if key_reward not in self.q:
+                        #print("not is in progress: ", max_key)  
+                        continue
+                    elif self.q[key_reward] > max_reward:
+                        max_reward = self.q[key_reward]
+                        max_key = action
+                        #print("update in progress: ", max_key)  
+                    else:
+                        #print(" else in progress: ", max_key)  
+                        continue    
+                              
+                # print("choose the best action with with probability 1-epsilon")
+            # print("epsilon is true")
+        else:
+            # Behave greedily ust like before:
+            for action in possible_actions:
+                row, num_objects  = action
+                key_reward = (tuple(state),action)
+                if key_reward not in self.q:
+                    continue
+                elif self.q[key_reward] > max_reward:
+                    max_reward = self.q[key_reward]
+                    max_key = action
+                else:
+                    continue
+            # print("epsilon is false")
+        # print("max_key: ", max_key)
+        return max_key
+        # raise NotImplementedError
 
 # ** HINT: **
 # ** 1. If lst is a list, then tuple(lst) can be used to convert lst 
